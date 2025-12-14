@@ -1,9 +1,10 @@
-import { baseProcedure, createTRPCRouter } from "../init";
-import prisma from "@/lib/database";
+import { baseProcedure, createTRPCRouter, protectedProcedure } from "../init";
+import prisma from "@/lib/db";
 export const appRouter = createTRPCRouter({
-  getUsers: baseProcedure //=api call
+  //data access layer - must use protecteProcedure to enforce auth
+  getUsers: protectedProcedure //=api call
 
-    .query(() => {
+    .query(({ ctx }) => {
       //query=get api call, mutation=post api call
       return prisma.user.findMany();
     }),
